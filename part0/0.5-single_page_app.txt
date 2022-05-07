@@ -1,0 +1,29 @@
+note over browser:
+user goes to the website:
+https://studies.cs.helsinki.fi/exampleapp/spa
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: Status code: 200 | HTML-code (spa)
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: Status code: 200 | main.css
+
+note over browser:
+browser starts executing css file
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server-->browser: Status code: 200 | main.js
+
+note over browser:
+browser starts executing js-code
+that requests JSON data from server 
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{ content: "uwu", date: "2022-05-07T07:38:01.413Z" }, ...]
+
+note over browser:
+browser executes the event handler
+that renders notes to display
+end note
