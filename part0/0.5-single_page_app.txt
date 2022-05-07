@@ -1,0 +1,18 @@
+note over browser:
+user types a message into the input
+field and clicks 'Save' button
+end note
+
+note over browser:
+onSubmit event handler is preventing 
+the page from reload, creates a new
+note and adds it to the notes list.
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server:
+message data is received in JSON format
+end note
+
+server-->browser: Response status 201
