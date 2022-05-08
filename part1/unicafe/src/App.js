@@ -12,6 +12,22 @@ const App = () => {
   const handleNeutralClick = () => setNeutral(neutral + 1)
   const handleBadClick = () => setBad(bad + 1)
 
+  const all = good + neutral + bad;
+
+  const countAvg = () => {
+    if (!!all) {
+      return (good * 1 + neutral * 0 + bad * -1) / all;
+    }
+    return 0;
+  }
+
+  const countPositive = () => {
+    if (!!all) {
+      return good * 100 / all; 
+    }
+    return 0;
+  }
+
   return (
     <div>
       <Heading/>
@@ -19,6 +35,9 @@ const App = () => {
       <Button name="neutral" onClick={handleNeutralClick}/>
       <Button name="bad" onClick={handleBadClick}/>
       <Statistics good={good} neutral={neutral} bad={bad}/>
+      <p>all {all}</p>
+      <p>average {countAvg()}</p>
+      <p>positive {countPositive()} %</p>
     </div>
   )
 }
