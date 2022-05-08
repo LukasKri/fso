@@ -1,4 +1,5 @@
 import React from "react";
+import StatisticLine from "./StatisticLine";
 
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad;
@@ -12,7 +13,7 @@ const Statistics = ({ good, neutral, bad }) => {
 
   const countPositive = () => {
     if (!!all) {
-      return (good * 100) / all;
+      return (good * 100) / all + " %";
     }
     return 0;
   };
@@ -27,12 +28,12 @@ const Statistics = ({ good, neutral, bad }) => {
       <h1>statistics</h1>
       {isAnyFeedbackGiven() ? (
         <>
-          <p>good {good}</p>
-          <p>neutral {neutral}</p>
-          <p>bad {bad}</p>
-          <p>all {all}</p>
-          <p>average {countAvg()}</p>
-          <p>positive {countPositive()} %</p>
+          <StatisticLine text="good" value={good} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+          <StatisticLine text="all" value={all} />
+          <StatisticLine text="average" value={countAvg()} />
+          <StatisticLine text="positive" value={countPositive()} />
         </>
       ) : (
         <p>No feedback given</p>
