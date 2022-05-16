@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Country from "./Country";
+import Filter from "./Filter";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [foundCountries, setFoundCountries] = useState([]);
 
   const foundCountriesCondition = countries.filter(({ name: { common } }) =>
     common.toLowerCase().includes(searchInput.toLowerCase())
   );
 
-  console.log(foundCountries);
-
   const handleSearchInput = (e) => {
     setSearchInput(e.target.value);
-    setFoundCountries(foundCountriesCondition);
   };
 
   useEffect(() => {
@@ -26,17 +24,19 @@ const App = () => {
   return (
     <div>
       <div>
-        find countries
-        <input value={searchInput} onChange={handleSearchInput} />
+        <Filter
+          searchInput={searchInput}
+          handleSearchInput={handleSearchInput}
+        />
       </div>
       <div>
-        {foundCountries.length > 10 ? (
+        {foundCountriesCondition.length > 10 ? (
           "Too many matches, specify another filter"
-        ) : foundCountries.length === 1 ? (
-          <h1>one</h1>
+        ) : foundCountriesCondition.length === 1 ? (
+          <Country foundCountry={foundCountriesCondition[0]} />
         ) : (
-          foundCountries.map((country) => (
-            <div key={country.name.official}>{country.name.common}</div>
+          foundCountriesCondition.map(({ name: { official, common } }) => (
+            <div key={official}>{common}</div>
           ))
         )}
       </div>
