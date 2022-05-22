@@ -31,13 +31,16 @@ const App = () => {
     if (personExists) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons(persons.concat(personObject));
-      resetFormInputs();
+      axios
+        .post("http://localhost:3001/persons", personObject)
+        .then((response) => {
+          setPersons(persons.concat(response.data));
+          resetFormInputs();
+        });
     }
   };
 
   useEffect(() => {
-    console.log("effect");
     axios
       .get("http://localhost:3001/persons")
       .then((response) => setPersons(response.data));
