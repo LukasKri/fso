@@ -16,9 +16,15 @@ const deleteRecord = (id) => {
   return request.then((response) => response.data);
 };
 
+const update = (id, person) => {
+  const request = axios.put(`${baseUrl}/${id}`, person);
+  return request.then((response) => response.data);
+};
+
 const methods = {
   getAll,
   create,
   deleteRecord,
+  update,
 };
 export default methods;

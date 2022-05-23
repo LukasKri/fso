@@ -26,10 +26,16 @@ const App = () => {
       number: newNumber,
     };
 
-    const personExists = persons.find((person) => person.name === newName);
+    const foundPerson = persons.find((person) => person.name === newName);
 
-    if (personExists) {
-      alert(`${newName} is already added to phonebook`);
+    if (foundPerson) {
+      if (
+        window.confirm(
+          `${personObject.name} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        phoneService.update(foundPerson.id, personObject);
+      }
     } else {
       phoneService.create(personObject).then((returnedRecord) => {
         setPersons(persons.concat(returnedRecord));
