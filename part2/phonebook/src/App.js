@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Filter from "./Filter";
+import SuccessMessage from "./SuccessMessage";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
 import phoneService from "./services/records";
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleSearchInput = (event) => setSearchInput(event.target.value);
   const handleNameChange = (event) => setNewName(event.target.value);
@@ -26,7 +28,9 @@ const App = () => {
       number: newNumber,
     };
 
-    const foundPerson = persons.find((person) => person.name === newName);
+    const foundPerson = persons.find(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
 
     if (foundPerson) {
       if (
@@ -35,11 +39,19 @@ const App = () => {
         )
       ) {
         phoneService.update(foundPerson.id, personObject);
+        setSuccessMessage(`Updated ${foundPerson.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 3000);
       }
     } else {
       phoneService.create(personObject).then((returnedRecord) => {
         setPersons(persons.concat(returnedRecord));
         resetFormInputs();
+        setSuccessMessage(`Added ${returnedRecord.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 3000);
       });
     }
   };
@@ -57,6 +69,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {!!successMessage && <SuccessMessage successMessage={successMessage} />}
       <Filter searchInput={searchInput} handleSearchInput={handleSearchInput} />
       <h2>Add a new</h2>
       <PersonForm
