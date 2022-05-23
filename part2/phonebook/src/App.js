@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import axios from "axios";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
@@ -41,7 +40,13 @@ const App = () => {
 
   useEffect(() => {
     phoneService.getAll().then((initialRecords) => setPersons(initialRecords));
-  }, []);
+  }, [persons]);
+
+  const handleDeleteClick = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      phoneService.deleteRecord(person.id);
+    }
+  };
 
   return (
     <div>
@@ -56,7 +61,11 @@ const App = () => {
         onSubmit={handleFormSubmit}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} searchInput={searchInput} />
+      <Persons
+        persons={persons}
+        searchInput={searchInput}
+        handleDeleteClick={handleDeleteClick}
+      />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import Person from "./Person";
 
-const Persons = ({ persons, searchInput }) => {
+const Persons = ({ persons, searchInput, handleDeleteClick }) => {
   return (
     <div>
       {persons
@@ -11,7 +11,11 @@ const Persons = ({ persons, searchInput }) => {
             searchInput === ""
         )
         .map((person) => (
-          <Person key={person.name} person={person} />
+          <Person
+            key={person.name}
+            person={person}
+            handleDeleteClick={handleDeleteClick}
+          />
         ))}
     </div>
   );
