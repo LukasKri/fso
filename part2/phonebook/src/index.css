@@ -1,9 +1,17 @@
-.success-message {
-  border: 3px solid green;
+.message {
   border-radius: 5px;
   padding: 10px;
   margin: 10px auto;
   font-size: 20px;
   background-color: rgb(208, 207, 207);
+}
+
+.success {
+  border: 3px solid green;
   color: green;
+}
+
+.error {
+  border: 3px solid red;
+  color: red;
 }

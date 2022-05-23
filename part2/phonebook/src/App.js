@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Filter from "./Filter";
-import SuccessMessage from "./SuccessMessage";
+import Message from "./Message";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
 import phoneService from "./services/records";
@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSearchInput = (event) => setSearchInput(event.target.value);
   const handleNameChange = (event) => setNewName(event.target.value);
@@ -38,11 +39,23 @@ const App = () => {
           `${personObject.name} is already added to the phonebook, replace the old number with a new one?`
         )
       ) {
-        phoneService.update(foundPerson.id, personObject);
-        setSuccessMessage(`Updated ${foundPerson.name}`);
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 3000);
+        phoneService
+          .update(foundPerson.id, personObject)
+          .then(() => {
+            setSuccessMessage(`Updated ${foundPerson.name}`);
+            setTimeout(() => {
+              setSuccessMessage(null);
+            }, 5000);
+          })
+          .catch((e) => {
+            console.error(e.message);
+            setErrorMessage(
+              `Information of ${foundPerson.name} has already been removed from the server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+          });
       }
     } else {
       phoneService.create(personObject).then((returnedRecord) => {
@@ -69,7 +82,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      {!!successMessage && <SuccessMessage successMessage={successMessage} />}
+      {!!successMessage && <Message type="success" message={successMessage} />}
+      {!!errorMessage && <Message type="error" message={errorMessage} />}
       <Filter searchInput={searchInput} handleSearchInput={handleSearchInput} />
       <h2>Add a new</h2>
       <PersonForm
